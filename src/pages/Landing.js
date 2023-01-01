@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import main from '../assets/images/main-alternative.svg'
 import Wrapper from '../assets/wrappers/LandingPage'
 import { Logo } from '../components'
@@ -19,12 +20,11 @@ const Landing = () => {
                         Cronut art party literally kogi cray, fam copper mug butcher YOLO
                         selfies.
                     </p>
-                    <button className='btn btn-hero'>Login/Register</button>
+                    <Link to='/register' className='btn btn-hero'>Login/Register</Link>
                 </div>
                 <img src={main} alt='job hunt' className='img main-img' />
             </div>
         </Wrapper>
     )
 }
-
 export default Landing
