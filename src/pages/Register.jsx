@@ -11,19 +11,22 @@ const initialState = {
  }
 
 const Register = () => {
-    const { isLoading, showAlert } = useAppContext()
+    const { isLoading, showAlert, displayAlert } = useAppContext()
 
     const [values, setValues] = useState(initialState)
 
     const handleChange = (e) => {
-        console.log(e.target)
+        setValues({...values, [e.target.name]: e.target.value})
     }
 
     const onSubmit = (e) => {
-        e.preventDefault();
-        console.log(e.target)
+        e.preventDefault()
+        const {name, email, password, isMember} = values;
+        if (!email || !password || (!isMember && !name )) {
+            displayAlert()
+            return
+        }
     }
-
 
     const toggleMember = () => {
         setValues({...values, isMember: !values.isMember})
