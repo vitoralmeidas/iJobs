@@ -8,6 +8,7 @@ import connectDB from './db/connect.js'
 
 // routers
 import authRouter from './routes/authRoutes.js'
+import jobRouter from './routes/jobsRoutes.js'
 
 // middleware
 import errorHandlerMiddleware from './middleware/error-handler.js'
@@ -23,6 +24,9 @@ app.get("/", (req, res) => {
 
 // auth route
 app.use('/api/v1/auth', authRouter)
+
+// jobs route
+app.use('/api/v1/jobs', jobRouter)
 
 // looking for requests errors
 app.use(notFoundMiddleware)
