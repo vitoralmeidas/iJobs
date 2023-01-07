@@ -1,6 +1,7 @@
 const errorHandlerMiddleware = (err, req, res, next) => {
     console.log(err);
-    res.status(500).json({ msg: 'there was an error' })
+    // receive the call of the last middlewere (requests)
+    res.status(500).json({ msg: err })
 }
 
 
