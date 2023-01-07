@@ -6,6 +6,7 @@ import errorHandlerMiddleware from './middleware/error-handler.js'
 import notFoundMiddleware from './middleware/not-found.js'
 
 app.get("/", (req, res) => {
+    // the error handler middleware will get this error 
     throw new Error('error')
     res.send("Let'sss go")
 })
