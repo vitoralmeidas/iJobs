@@ -1,5 +1,6 @@
 import 'express-async-errors'
 import express from 'express'
+import 'colors'
 const app = express()
 import dotenv from 'dotenv'
 dotenv.config()
@@ -41,7 +42,7 @@ const start = async () => {
     try {
         await connectDB(process.env.MONGO_URL)
         app.listen(port, () => {
-            console.log(`Server is listening on port ${port}...`)
+            console.log(`Server is listening on port ${port}...`.yellow.bold)
         })
     } catch (error) {
         console.log(error)
