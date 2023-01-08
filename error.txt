@@ -1,0 +1,9 @@
+- Proxy
+    Uncaught (in promise) SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+
+    /             - static server returns index.html with React app
+    /todos        - static server returns index.html with React app
+    /api/todos    - server handles any /api/* requests using the backend implementation
+
+    solution:
+        change the root path "/" to "/api/v1"

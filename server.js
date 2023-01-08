@@ -1,7 +1,7 @@
 import 'express-async-errors'
 import express from 'express'
-import 'colors'
 const app = express()
+import 'colors'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -21,7 +21,13 @@ app.use(express.json())
 app.get("/", (req, res) => {
     // the error handler middleware will get this error 
     // throw new Error('error')
-    res.send("Let'sss go")
+    res.json({ msg: "HI THERE" })
+})
+
+app.get("/api/v1", (req, res) => {
+    // the error handler middleware will get this error 
+    // throw new Error('error')
+    res.json({ msg: "API" })
 })
 
 // auth route
