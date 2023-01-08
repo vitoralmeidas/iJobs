@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 
 // receive the call of the last middlewere (requests)
 const errorHandlerMiddleware = (err, req, res, next) => {
-    console.log(err.message);
+    console.log(err);
 
     const defaultError = {
         statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
@@ -23,8 +23,6 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     }
 
     // generic 
-    // res.status(defaultError.statusCode).json({ msg: err })
-
     res.status(defaultError.statusCode).json({ msg: defaultError.msg })
 }
 
