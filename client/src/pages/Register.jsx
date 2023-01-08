@@ -11,7 +11,7 @@ const initialState = {
  }
 
 const Register = () => {
-    const { isLoading, showAlert, displayAlert } = useAppContext()
+    const { isLoading, showAlert, displayAlert, registerUser } = useAppContext()
 
     const [values, setValues] = useState(initialState)
 
@@ -26,11 +26,20 @@ const Register = () => {
             displayAlert()
             return
         }
+        const currentUser = {name, email , password}
+
+        if (isMember) {
+            console.log("already a member")
+        } else {
+            registerUser(currentUser)
+        }
     }
 
     const toggleMember = () => {
         setValues({...values, isMember: !values.isMember})
     };
+
+
 
   return (
     <Wrapper className='full-page'>
@@ -62,19 +71,19 @@ const Register = () => {
             {/* password input */}
             <FormRow 
                 name='password'
-                type='text' 
+                type='password' 
                 handleChange={handleChange} 
                 value={values.password} 
             />
 
-            <button type='submit' className="btn btn-block">Submit</button>
+            <button type='submit' className="btn btn-block" disabled = {isLoading} >Submit</button>
 
             {/* toogle button */}
             <p>
                 {values.isMember ? 'Not a member yet ?' : 'Already a member'}
 
                 <button type='button' onClick={toggleMember} className='member-btn'>{
-                    values.isMember? 'Login': 'Register'}
+                    values.isMember? 'Register': 'Login'}
                 </button>
             </p>
         </form>
