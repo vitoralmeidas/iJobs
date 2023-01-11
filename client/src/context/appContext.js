@@ -7,7 +7,10 @@ import {
   CLEAR_ALERT,
   REGISTER_USER_BEGIN,
   REGISTER_USER_ERROR,
-  REGISTER_USER_SUCCESS
+  REGISTER_USER_SUCCESS,
+  LOGIN_USER_BEGIN,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR
 } from './actions'
 
 // checking if there's a user
@@ -19,9 +22,9 @@ const userLocation = localStorage.getItem('location')
 const initialState = {
   user: user ? JSON.parse(user) : null,
   token: token || '',
-  isLoading: false,
   userLocation: userLocation || '',
   jobLocation: userLocation || '',
+  isLoading: false,
   showAlert: true,
   alertType: '',
   alertText: ''
@@ -80,8 +83,36 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  const loginUser = async loggedUser => {
+    dispatch({ type: LOGIN_USER_BEGIN })
+
+    try {
+      const response = await axios.post('/api/v1/auth/login', loggedUser)
+      const { user, token, location } = await response.data
+      dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: {
+          user,
+          token,
+          location
+        }
+      })
+      addUserToLocalStorage({ user, token, location })
+    } catch (error) {
+      dispatch({
+        type: LOGIN_USER_ERROR,
+        payload: {
+          msg: error.response.data.msg
+        }
+      })
+    }
+    clearAlert()
+  }
+
   return (
-    <AppContext.Provider value={{ ...state, displayAlert, registerUser }}>
+    <AppContext.Provider
+      value={{ ...state, displayAlert, registerUser, loginUser }}
+    >
       {/* children is the whole application */}
       {children}
     </AppContext.Provider>

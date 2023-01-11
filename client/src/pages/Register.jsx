@@ -1,4 +1,4 @@
-import { useState, useEffect, useInsertionEffect } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { Logo, FormRow, Alert } from "../components"
 import Wrapper from "../assets/wrappers/RegisterPage"
@@ -12,7 +12,7 @@ const initialState = {
  }
 
 const Register = () => {
-    const { isLoading, showAlert, displayAlert, registerUser, user } = useAppContext()
+    const { isLoading, showAlert, displayAlert, registerUser, user, loginUser } = useAppContext()
     const [values, setValues] = useState(initialState)
     const navigate = useNavigate()
 
@@ -38,9 +38,10 @@ const Register = () => {
             return
         }
         const currentUser = {name, email , password}
-
+        const login = {email, password}
         if (isMember) {
             console.log("already a member")
+            loginUser(login)
         } else {
             registerUser(currentUser)
         }
