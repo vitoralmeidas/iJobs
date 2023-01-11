@@ -5,12 +5,9 @@ import reducer from './reducer'
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
-  REGISTER_USER_BEGIN,
-  REGISTER_USER_ERROR,
-  REGISTER_USER_SUCCESS,
-  LOGIN_USER_BEGIN,
-  LOGIN_USER_SUCCESS,
-  LOGIN_USER_ERROR
+  SETUP_USER_BEGIN,
+  SETUP_USER_ERROR,
+  SETUP_USER_SUCCESS
 } from './actions'
 
 // checking if there's a user
@@ -58,49 +55,25 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem('location')
   }
 
-  const registerUser = async currentUser => {
-    dispatch({ type: REGISTER_USER_BEGIN })
+  const setUpUser = async ({ currentUser, endPoint, alertText }) => {
+    dispatch({ type: SETUP_USER_BEGIN })
+
     try {
-      const response = await axios.post('/api/v1/auth/register', currentUser)
-      console.log(response)
+      const response = await axios.post(`/api/v1/auth/${endPoint}`, currentUser)
       const { user, token, location } = await response.data
       dispatch({
-        type: REGISTER_USER_SUCCESS,
+        type: SETUP_USER_SUCCESS,
         payload: {
           user,
           token,
-          location
-        }
-      })
-      addUserToLocalStorage({ user, token, location })
-    } catch (error) {
-      console.log(error.response)
-      dispatch({
-        type: REGISTER_USER_ERROR,
-        payload: { msg: error.response.data.msg }
-      })
-    }
-    clearAlert()
-  }
-
-  const loginUser = async loggedUser => {
-    dispatch({ type: LOGIN_USER_BEGIN })
-
-    try {
-      const response = await axios.post('/api/v1/auth/login', loggedUser)
-      const { user, token, location } = await response.data
-      dispatch({
-        type: LOGIN_USER_SUCCESS,
-        payload: {
-          user,
-          token,
-          location
+          location,
+          alertText
         }
       })
       addUserToLocalStorage({ user, token, location })
     } catch (error) {
       dispatch({
-        type: LOGIN_USER_ERROR,
+        type: SETUP_USER_ERROR,
         payload: {
           msg: error.response.data.msg
         }
@@ -110,9 +83,7 @@ const AppProvider = ({ children }) => {
   }
 
   return (
-    <AppContext.Provider
-      value={{ ...state, displayAlert, registerUser, loginUser }}
-    >
+    <AppContext.Provider value={{ ...state, displayAlert, setUpUser }}>
       {/* children is the whole application */}
       {children}
     </AppContext.Provider>
