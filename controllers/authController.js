@@ -9,18 +9,22 @@ const register = async (req, res) => {
     throw new BadRequestError('please provide all values')
   }
 
-  // // duplicate email
+  // duplicate email
   const userAlreadyExists = await User.findOne({ email })
-  if (userAlreadyExists) throw new BadRequestError('Email already in use')
+  if (userAlreadyExists) {
+    throw new BadRequestError('Email already in use')
+  }
 
   const user = await User.create({ name, email, password })
+
   const token = user.createJWT()
+
   res.status(StatusCodes.CREATED).json({
     user: {
-      email: user.email,
+      name: user.name,
       lastName: user.lastName,
-      location: user.location,
-      name: user.name
+      email: user.email,
+      location: user.location
     },
     token
   })

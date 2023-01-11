@@ -7,3 +7,51 @@
 
     solution:
         change the root path "/" to "/api/v1"
+
+
+---- Missing Error ----
+{
+    "msg": {
+        "errors": {
+            "password": {
+                "name": "ValidatorError",
+                "message": "Please provide password",
+                "properties": {
+                    "message": "Please provide password",
+                    "type": "required",
+                    "path": "password"
+                },
+                "kind": "required",
+                "path": "password"
+            },
+            "email": {
+                "name": "ValidatorError",
+                "message": "Please provide email",
+                "properties": {
+                    "message": "Please provide email",
+                    "type": "required",
+                    "path": "email"
+                },
+                "kind": "required",
+                "path": "email"
+            }
+        },
+        "_message": "User validation failed",
+        "name": "ValidationError",
+        "message": "User validation failed: password: Please provide password, email: Please provide email"
+    }
+}
+
+---- Unique Error ----
+{
+    "msg": {
+        "index": 0,
+        "code": 11000,
+        "keyPattern": {
+            "email": 1
+        },
+        "keyValue": {
+            "email": "vitor@vitor.com"
+        }
+    }
+}

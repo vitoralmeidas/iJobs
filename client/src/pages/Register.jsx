@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useInsertionEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { Logo, FormRow, Alert } from "../components"
 import Wrapper from "../assets/wrappers/RegisterPage"
 import { useAppContext } from "../context/appContext"
@@ -11,13 +12,23 @@ const initialState = {
  }
 
 const Register = () => {
-    const { isLoading, showAlert, displayAlert, registerUser } = useAppContext()
-
+    const { isLoading, showAlert, displayAlert, registerUser, user } = useAppContext()
     const [values, setValues] = useState(initialState)
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         setValues({...values, [e.target.name]: e.target.value})
     }
+
+    useEffect(()=>{
+
+        if (user !== null) {
+            setTimeout(() => {
+                navigate('/')
+            }, 3000)
+        }
+
+    }, [user, navigate])
 
     const onSubmit = (e) => {
         e.preventDefault()
