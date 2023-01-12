@@ -7,7 +7,8 @@ import {
   CLEAR_ALERT,
   SETUP_USER_BEGIN,
   SETUP_USER_ERROR,
-  SETUP_USER_SUCCESS
+  SETUP_USER_SUCCESS,
+  TOGGLE_SIDEBAR
 } from './actions'
 
 // checking if there's a user
@@ -24,7 +25,8 @@ const initialState = {
   isLoading: false,
   showAlert: true,
   alertType: '',
-  alertText: ''
+  alertText: '',
+  showSideBar: false
 }
 
 const AppContext = React.createContext()
@@ -82,8 +84,14 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  const toogleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR })
+  }
+
   return (
-    <AppContext.Provider value={{ ...state, displayAlert, setUpUser }}>
+    <AppContext.Provider
+      value={{ ...state, displayAlert, setUpUser, toogleSidebar }}
+    >
       {/* children is the whole application */}
       {children}
     </AppContext.Provider>

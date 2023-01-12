@@ -3,7 +3,8 @@ import {
   DISPLAY_ALERT,
   SETUP_USER_BEGIN,
   SETUP_USER_ERROR,
-  SETUP_USER_SUCCESS
+  SETUP_USER_SUCCESS,
+  TOGGLE_SIDEBAR
 } from './actions'
 
 const reducer = (state, action) => {
@@ -50,6 +51,13 @@ const reducer = (state, action) => {
       alertText: action.payload.msg,
       showAlert: true,
       isLoading: false
+    }
+  }
+
+  if (action.type === TOGGLE_SIDEBAR) {
+    return {
+      ...state,
+      showSideBar: !state.showSideBar
     }
   }
 
