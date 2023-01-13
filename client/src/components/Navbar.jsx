@@ -6,12 +6,12 @@ import { useState } from 'react'
 
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false)
-  const { toogleSidebar, user, logoutUser } = useAppContext()
+  const { toggleSideBar, user, logoutUser } = useAppContext()
 
   return (
     <Wrapper>
       <div className='nav-center'>
-        <button className='toggle-btn' onClick={toogleSidebar}>
+        <button className='toggle-btn' onClick={toggleSideBar}>
           <FaAlignLeft />
         </button>
         <div>
