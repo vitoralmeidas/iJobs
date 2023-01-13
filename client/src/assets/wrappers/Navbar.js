@@ -6,6 +6,7 @@ const Wrapper = styled.nav`
   align-items: center;
   justify-content: center;
   box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.1);
+  background: var(--white);
   .logo {
     display: flex;
     align-items: center;
@@ -26,7 +27,6 @@ const Wrapper = styled.nav`
     display: flex;
     align-items: center;
   }
-  background: var(--white);
   .btn-container {
     position: relative;
   }
@@ -38,8 +38,8 @@ const Wrapper = styled.nav`
     position: relative;
     box-shadow: var(--shadow-2);
   }
-
   .dropdown {
+    visibility: hidden;
     position: absolute;
     top: 40px;
     left: 0;
@@ -48,7 +48,6 @@ const Wrapper = styled.nav`
     box-shadow: var(--shadow-2);
     padding: 0.5rem;
     text-align: center;
-    visibility: hidden;
     border-radius: var(--borderRadius);
   }
   .show-dropdown {

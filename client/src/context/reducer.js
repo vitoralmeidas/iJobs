@@ -1,3 +1,4 @@
+import { initialState } from './appContext'
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
@@ -64,7 +65,7 @@ const reducer = (state, action) => {
 
   if (action.type === LOGOUT_USER) {
     return {
-      ...state,
+      ...initialState,
       user: null,
       token: null,
       userLocation: '',

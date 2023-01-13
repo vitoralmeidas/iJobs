@@ -5,8 +5,8 @@ import { useAppContext } from '../context/appContext'
 import { useState } from 'react'
 
 const Navbar = () => {
-  const { toogleSidebar, user, logoutUser } = useAppContext()
   const [showLogout, setShowLogout] = useState(false)
+  const { toogleSidebar, user, logoutUser } = useAppContext()
 
   return (
     <Wrapper>
