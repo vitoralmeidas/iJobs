@@ -8,7 +8,8 @@ import {
   SETUP_USER_BEGIN,
   SETUP_USER_ERROR,
   SETUP_USER_SUCCESS,
-  TOGGLE_SIDEBAR
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER
 } from './actions'
 
 // checking if there's a user
@@ -88,9 +89,14 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
+  const logoutUser = () => {
+    dispatch({ type: LOGOUT_USER })
+    removeUserFromLocalStorage()
+  }
+
   return (
     <AppContext.Provider
-      value={{ ...state, displayAlert, setUpUser, toogleSidebar }}
+      value={{ ...state, displayAlert, setUpUser, toogleSidebar, logoutUser }}
     >
       {/* children is the whole application */}
       {children}

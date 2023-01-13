@@ -1,6 +1,7 @@
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  LOGOUT_USER,
   SETUP_USER_BEGIN,
   SETUP_USER_ERROR,
   SETUP_USER_SUCCESS,
@@ -58,6 +59,16 @@ const reducer = (state, action) => {
     return {
       ...state,
       showSideBar: !state.showSideBar
+    }
+  }
+
+  if (action.type === LOGOUT_USER) {
+    return {
+      ...state,
+      user: null,
+      token: null,
+      userLocation: '',
+      jobLocation: ''
     }
   }
 
