@@ -22,12 +22,6 @@ const UserSchema = new mongoose.Schema({
       message: 'Please provide a valid email'
     },
     unique: true
-
-    // validation
-    // match: [
-    //     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    //     "Please provide a valid email",
-    // ],
   },
 
   password: {
@@ -56,6 +50,7 @@ const UserSchema = new mongoose.Schema({
 // Mongoose middleware
 // doing something before saving on db
 UserSchema.pre('save', async function () {
+  if (!this.isModified('password')) return
   const saltRounds = await bcrypt.genSalt(10)
   this.password = await bcrypt.hash(this.password, saltRounds)
 })
