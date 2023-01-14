@@ -35,8 +35,39 @@ const AppContext = React.createContext()
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  // global setup Bearer axios
-  axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`
+  const authFetch = axios.create({
+    baseURL: '/api/v1'
+  })
+
+  // interceptors
+  // request
+  authFetch.interceptors.request.use(
+    config => {
+      // Do something before request is sent
+      // config.headers['Authorization'] = `Bearer ${state.token}`
+      return config
+    },
+    error => {
+      return Promise.reject(error)
+    }
+  )
+  // response
+  authFetch.interceptors.response.use(
+    response => {
+      // Any status code that lie within the range of 2xx cause this function to trigger
+      // Do something with response data
+      return response
+    },
+    error => {
+      // Any status codes that falls outside the range of 2xx cause this function to trigger
+      // Do something with response error
+      console.log(error.response)
+      if (error.response.status === 401) {
+        console.log('AUTH ERROR')
+      }
+      return Promise.reject(error)
+    }
+  )
 
   const clearAlert = () => {
     setTimeout(() => {
@@ -99,10 +130,10 @@ const AppProvider = ({ children }) => {
 
   const updateUser = async currentUser => {
     try {
-      const { data } = await axios.patch('/api/v1/auth/updateUser', currentUser)
+      const { data } = await authFetch.patch('/auth/updateUser', currentUser)
       console.log(data)
     } catch (error) {
-      console.log(error.response)
+      // console.log(error.response)
     }
   }
 
