@@ -1,10 +1,10 @@
-import express from "express";
-const router = express.Router();
+import express from 'express'
+const router = express.Router()
+import authenticateUser from '../middleware/auth.js'
+import { login, register, updateUser } from '../controllers/authController.js'
 
-import { login, register, updateUser } from "../controllers/authController.js";
+router.route('/register').post(register)
+router.route('/login').post(login)
+router.route('/updateUser').patch(authenticateUser, updateUser)
 
-router.route('/register').post(register);
-router.route('/login').post(login);
-router.route('/updateUser').patch(updateUser);
-
-export default router;
+export default router
