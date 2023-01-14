@@ -19,7 +19,6 @@ const Profile = () => {
       displayAlert()
       return
     }
-
     updateUser({ name, lastName, email, location })
   }
 

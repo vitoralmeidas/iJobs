@@ -6,7 +6,10 @@ import {
   SETUP_USER_BEGIN,
   SETUP_USER_ERROR,
   SETUP_USER_SUCCESS,
-  TOGGLE_SIDEBAR
+  TOGGLE_SIDEBAR,
+  UPDATE_USER_BEGIN,
+  UPDATE_USER_ERROR,
+  UPDATE_USER_SUCCESS
 } from './actions'
 
 const reducer = (state, action) => {
@@ -70,6 +73,37 @@ const reducer = (state, action) => {
       token: null,
       userLocation: '',
       jobLocation: ''
+    }
+  }
+
+  if (action.type === UPDATE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+
+  if (action.type === UPDATE_USER_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'User Profile Updated!',
+      user: action.payload.user,
+      toke: action.payload.token,
+      userLocation: action.payload.location,
+      jobLocation: action.payload.location
+    }
+  }
+
+  if (action.type === UPDATE_USER_ERROR) {
+    return {
+      ...state,
+      alertType: 'danger',
+      isLoading: false,
+      alertText: action.payload.msg,
+      showAlert: true
     }
   }
 
