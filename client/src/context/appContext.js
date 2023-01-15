@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import axios from 'axios'
 import reducer from './reducer'
 
@@ -17,7 +17,9 @@ import {
   CLEAR_VALUES,
   CREATE_JOB_BEGIN,
   CREATE_JOB_SUCCESS,
-  CREATE_JOB_ERROR
+  CREATE_JOB_ERROR,
+  GET_JOBS_BEGIN,
+  GET_JOBS_SUCCESS
 } from './actions'
 
 // checking if there's a user
@@ -43,7 +45,11 @@ const initialState = {
   jobType: 'full-time',
   statusOptions: ['pending', 'interview', 'declined'],
   status: 'pending',
-  jobLocation: userLocation || ''
+  jobLocation: userLocation || '',
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 1,
+  pages: 1
 }
 
 const AppContext = React.createContext()
@@ -206,6 +212,35 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  const getJobs = async () => {
+    dispatch({ type: GET_JOBS_BEGIN })
+
+    try {
+      const { data } = await authFetch.get('/jobs')
+      const { jobs, numOfPages, totalJobs } = data
+      dispatch({
+        type: GET_JOBS_SUCCESS,
+        payload: {
+          jobs,
+          numOfPages,
+          totalJobs
+        }
+      })
+    } catch (error) {
+      console.log(error.response)
+      // any error will be a server problem, 4xx or 5xx
+      // just logout the user
+      // testing
+      // logoutUser()
+    }
+    // clear all posible alerts
+    clearAlert()
+  }
+
+  useEffect(() => {
+    getJobs()
+  }, [])
+
   return (
     <AppContext.Provider
       value={{
@@ -217,10 +252,11 @@ const AppProvider = ({ children }) => {
         updateUser,
         handleChange,
         clearValues,
-        createJob
+        createJob,
+        getJobs
       }}
     >
-      {/* children is the whole application */}
+      {/* children is App */}
       {children}
     </AppContext.Provider>
   )
