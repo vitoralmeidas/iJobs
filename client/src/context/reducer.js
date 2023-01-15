@@ -1,7 +1,9 @@
 import { initialState } from './appContext'
 import {
   CLEAR_ALERT,
+  CLEAR_VALUES,
   DISPLAY_ALERT,
+  HANDLE_CHANGE,
   LOGOUT_USER,
   SETUP_USER_BEGIN,
   SETUP_USER_ERROR,
@@ -104,6 +106,29 @@ const reducer = (state, action) => {
       isLoading: false,
       alertText: action.payload.msg,
       showAlert: true
+    }
+  }
+
+  if (action.type === HANDLE_CHANGE) {
+    return {
+      ...state,
+      [action.payload.name]: action.payload.value
+    }
+  }
+
+  if (action.type === CLEAR_VALUES) {
+    const initialStateJob = {
+      isEditing: false,
+      editJob: '',
+      position: '',
+      company: '',
+      jobType: 'full-time',
+      status: 'pending',
+      jobLocation: state.userLocation
+    }
+    return {
+      ...state,
+      ...initialStateJob
     }
   }
 

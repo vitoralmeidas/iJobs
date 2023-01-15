@@ -1,5 +1,5 @@
 import Wrapper from '../../assets/wrappers/DashboardFormPage'
-import { FormRow, Alert } from '../../components'
+import { FormRow, Alert, FormRowSelect } from '../../components'
 import { useAppContext } from '../../context/appContext'
 const AddJob = () => {
   const {
@@ -9,10 +9,12 @@ const AddJob = () => {
     jobLocation,
     position,
     company,
-    jopType,
+    jobType,
     jobTypeOptions,
     status,
-    statusOptions
+    statusOptions,
+    handleChange,
+    clearValues
   } = useAppContext()
 
   const handleSubmit = e => {
@@ -25,17 +27,14 @@ const AddJob = () => {
     console.log('job created')
   }
 
-  const handleInputJob = e => {
-    const name = e.target.name
-    const value = e.target.value
-    console.log(`${name}: ${value}`)
+  const handleJobInput = e => {
+    handleChange({ name: e.target.name, value: e.target.value })
   }
 
   return (
     <Wrapper>
       <form className='form' onSubmit={handleSubmit}>
         <h3>{isEditing ? 'edit job' : 'add job'}</h3>
-
         {showAlert && <Alert />}
 
         <div className='form-center'>
@@ -43,14 +42,14 @@ const AddJob = () => {
             type='text'
             name='position'
             value={position}
-            handleChange={handleInputJob}
+            handleChange={handleJobInput}
           />
 
           <FormRow
             type='text'
             name='company'
             value={company}
-            handleChange={handleInputJob}
+            handleChange={handleJobInput}
           />
 
           <FormRow
@@ -58,10 +57,24 @@ const AddJob = () => {
             type='text'
             name='jobLocation'
             value={jobLocation}
-            handleChange={handleInputJob}
+            handleChange={handleJobInput}
           />
-          {/* select  status*/}
-          {/* select job type */}
+
+          <FormRowSelect
+            name='status'
+            value={status}
+            handleChange={handleJobInput}
+            list={statusOptions}
+          />
+
+          <FormRowSelect
+            labelText='type'
+            name='jobType'
+            value={jobType}
+            handleChange={handleJobInput}
+            list={jobTypeOptions}
+          />
+
           <div className='btn-container'>
             <button
               className='btn btn-block submit-btn'
@@ -69,6 +82,15 @@ const AddJob = () => {
               disabled=''
             >
               Submit
+            </button>
+            <button
+              className='btn btn-block clear-btn'
+              onClick={e => {
+                e.preventDefault()
+                clearValues()
+              }}
+            >
+              clear
             </button>
           </div>
         </div>

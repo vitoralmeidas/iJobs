@@ -12,7 +12,9 @@ import {
   LOGOUT_USER,
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
-  UPDATE_USER_ERROR
+  UPDATE_USER_ERROR,
+  HANDLE_CHANGE,
+  CLEAR_VALUES
 } from './actions'
 
 // checking if there's a user
@@ -162,6 +164,19 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
+  const handleChange = ({ name, value }) => {
+    dispatch({
+      type: HANDLE_CHANGE,
+      payload: { name, value }
+    })
+  }
+
+  const clearValues = () => {
+    dispatch({
+      type: CLEAR_VALUES
+    })
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -170,7 +185,9 @@ const AppProvider = ({ children }) => {
         setUpUser,
         toggleSideBar,
         logoutUser,
-        updateUser
+        updateUser,
+        handleChange,
+        clearValues
       }}
     >
       {/* children is the whole application */}
