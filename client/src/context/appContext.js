@@ -14,7 +14,10 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   HANDLE_CHANGE,
-  CLEAR_VALUES
+  CLEAR_VALUES,
+  CREATE_JOB_BEGIN,
+  CREATE_JOB_SUCCESS,
+  CREATE_JOB_ERROR
 } from './actions'
 
 // checking if there's a user
@@ -48,15 +51,16 @@ const AppContext = React.createContext()
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  // axios config
   const authFetch = axios.create({
     baseURL: '/api/v1'
   })
 
   // interceptors
-
   authFetch.interceptors.request.use(
     config => {
       // Do something before request is sent
+      // the job's actions will use token and updateUser too
       config.headers['Authorization'] = `Bearer ${state.token}`
       return config
     },
@@ -76,6 +80,7 @@ const AppProvider = ({ children }) => {
       // Do something with response error
       console.log(error.response)
       if (error.response.status === 401) {
+        // if there is no token
         logoutUser()
       }
       return Promise.reject(error)
@@ -154,12 +159,11 @@ const AppProvider = ({ children }) => {
       })
       addUserToLocalStorage({ user, location, token })
     } catch (error) {
-      if (error.response.status !== 401) {
-        dispatch({
-          type: UPDATE_USER_ERROR,
-          payload: { msg: error.response.data.msg }
-        })
-      }
+      if (error.response.status === 401) return
+      dispatch({
+        type: UPDATE_USER_ERROR,
+        payload: { msg: error.response.data.msg }
+      })
     }
     clearAlert()
   }
@@ -177,6 +181,31 @@ const AppProvider = ({ children }) => {
     })
   }
 
+  const createJob = async () => {
+    dispatch({ type: CREATE_JOB_BEGIN })
+    try {
+      // I'm already updating the state... do not need to send a 'new job'
+      const { position, company, jobLocation, status } = state
+      await authFetch.post('/jobs', {
+        position,
+        company,
+        jobLocation,
+        status
+      })
+      dispatch({
+        type: CREATE_JOB_SUCCESS
+      })
+      dispatch({ type: CLEAR_VALUES })
+    } catch (error) {
+      if (error.response.status === 401) return
+      dispatch({
+        type: CREATE_JOB_ERROR,
+        payload: { msg: error.response.data.msg }
+      })
+    }
+    clearAlert()
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -187,7 +216,8 @@ const AppProvider = ({ children }) => {
         logoutUser,
         updateUser,
         handleChange,
-        clearValues
+        clearValues,
+        createJob
       }}
     >
       {/* children is the whole application */}

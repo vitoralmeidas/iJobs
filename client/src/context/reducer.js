@@ -2,6 +2,9 @@ import { initialState } from './appContext'
 import {
   CLEAR_ALERT,
   CLEAR_VALUES,
+  CREATE_JOB_BEGIN,
+  CREATE_JOB_ERROR,
+  CREATE_JOB_SUCCESS,
   DISPLAY_ALERT,
   HANDLE_CHANGE,
   LOGOUT_USER,
@@ -129,6 +132,30 @@ const reducer = (state, action) => {
     return {
       ...state,
       ...initialStateJob
+    }
+  }
+
+  if (action.type === CREATE_JOB_BEGIN) {
+    return { ...state, isLoading: true }
+  }
+
+  if (action.type === CREATE_JOB_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'New Job created!'
+    }
+  }
+
+  if (action.type === CREATE_JOB_ERROR) {
+    return {
+      ...state,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
+      isLoading: false
     }
   }
 
