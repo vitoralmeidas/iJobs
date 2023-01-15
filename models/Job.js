@@ -7,11 +7,13 @@ const JobSchema = new mongoose.Schema(
       required: [true, 'Please provide company name'],
       maxLength: 50
     },
+
     position: {
       type: String,
       required: [true, 'Please provide position'],
       maxLength: 100
     },
+
     status: {
       type: String,
       enum: ['interview', 'declined', 'pending'],
@@ -20,9 +22,10 @@ const JobSchema = new mongoose.Schema(
 
     jobType: {
       type: String,
-      enum: ['full-time', 'part-time', 'remote', 'intership'],
+      enum: ['full-time', 'part-time', 'remote', 'internship'],
       default: 'full-time'
     },
+
     jobLocation: {
       type: String,
       default: 'my city',
