@@ -6,6 +6,9 @@ import {
   CREATE_JOB_ERROR,
   CREATE_JOB_SUCCESS,
   DISPLAY_ALERT,
+  EDIT_JOB_BEGIN,
+  EDIT_JOB_ERROR,
+  EDIT_JOB_SUCCESS,
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
   HANDLE_CHANGE,
@@ -13,6 +16,7 @@ import {
   SETUP_USER_BEGIN,
   SETUP_USER_ERROR,
   SETUP_USER_SUCCESS,
+  SET_EDIT_JOB,
   TOGGLE_SIDEBAR,
   UPDATE_USER_BEGIN,
   UPDATE_USER_ERROR,
@@ -172,6 +176,50 @@ const reducer = (state, action) => {
       jobs: action.payload.jobs,
       totalJobs: action.payload.totalJobs,
       totalOfPages: action.payload.totalOfPages
+    }
+  }
+
+  if (action.type === SET_EDIT_JOB) {
+    // find the job
+    const job = state.jobs.find(job => job._id === action.payload.id)
+    const { _id, company, position, jobLocation, jobType, status } = job
+
+    return {
+      ...state,
+      isEditing: true,
+      editJobId: _id,
+      position,
+      jobLocation,
+      jobType,
+      company,
+      status
+    }
+  }
+
+  if (action.type === EDIT_JOB_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+
+  if (action.type === EDIT_JOB_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Job Updated'
+    }
+  }
+
+  if (action.type === EDIT_JOB_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg
     }
   }
 

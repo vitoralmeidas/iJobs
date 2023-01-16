@@ -19,7 +19,11 @@ import {
   CREATE_JOB_SUCCESS,
   CREATE_JOB_ERROR,
   GET_JOBS_BEGIN,
-  GET_JOBS_SUCCESS
+  GET_JOBS_SUCCESS,
+  SET_EDIT_JOB,
+  EDIT_JOB_BEGIN,
+  EDIT_JOB_SUCCESS,
+  EDIT_JOB_ERROR
 } from './actions'
 
 // checking if there's a user
@@ -49,7 +53,8 @@ const initialState = {
   jobs: [],
   totalJobs: 0,
   numOfPages: 1,
-  pages: 1
+  pages: 1,
+  editJobId: ''
 }
 
 const AppContext = React.createContext()
@@ -237,9 +242,37 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
-  // later
   const setEditJob = id => {
-    console.log(`set edit job: ${id}`)
+    dispatch({
+      type: SET_EDIT_JOB,
+      payload: { id }
+    })
+  }
+
+  const editJob = async () => {
+    dispatch({ type: EDIT_JOB_BEGIN })
+    try {
+      const { company, position, jobLocation, jobType, status } = state
+
+      await authFetch.patch(`/jobs/${state.editJobId}`, {
+        company,
+        position,
+        jobLocation,
+        jobType,
+        status
+      })
+      dispatch({
+        type: EDIT_JOB_SUCCESS
+      })
+      dispatch({ type: CLEAR_VALUES })
+    } catch (error) {
+      if (error.response.status === 401) return
+      dispatch({
+        type: EDIT_JOB_ERROR,
+        payload: { msg: error.response.data.msg }
+      })
+    }
+    clearAlert()
   }
 
   const deleteJob = id => {
@@ -260,7 +293,8 @@ const AppProvider = ({ children }) => {
         createJob,
         getJobs,
         setEditJob,
-        deleteJob
+        deleteJob,
+        editJob
       }}
     >
       {/* children is App */}
