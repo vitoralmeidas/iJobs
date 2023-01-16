@@ -237,9 +237,14 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
-  useEffect(() => {
-    getJobs()
-  }, [])
+  // later
+  const setEditJob = id => {
+    console.log(`set edit job: ${id}`)
+  }
+
+  const deleteJob = id => {
+    console.log(`delete: ${id}`)
+  }
 
   return (
     <AppContext.Provider
@@ -253,7 +258,9 @@ const AppProvider = ({ children }) => {
         handleChange,
         clearValues,
         createJob,
-        getJobs
+        getJobs,
+        setEditJob,
+        deleteJob
       }}
     >
       {/* children is App */}
