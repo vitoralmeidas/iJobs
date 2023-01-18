@@ -1,6 +1,11 @@
 import Job from '../models/Job.js'
-import { BadRequestError, NotFoundError } from '../errors/index.js'
+import {
+  BadRequestError,
+  NotFoundError,
+  Unauthenticated
+} from '../errors/index.js'
 import { StatusCodes } from 'http-status-codes'
+import checkPermissions from '../utils/checkPersmissions.js'
 
 const createJob = async (req, res) => {
   const { company, position } = req.body
@@ -44,6 +49,8 @@ const updateJob = async (req, res) => {
     throw new NotFoundError(`No job with id: ${jobId}`)
   }
 
+  checkPermissions(req.user, job.createdBy)
+
   // atomic operation
   // if we might have a hook this method do not trigger the hook
   // it suits better in our case
@@ -59,8 +66,6 @@ const updateJob = async (req, res) => {
   // job.company = company
   // job.jobLocation = jobLocation
   // await job.save()
-
-  // check permissions
 
   res.status(StatusCodes.OK).json({ updatedJob })
 }
