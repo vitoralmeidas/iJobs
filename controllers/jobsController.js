@@ -48,8 +48,8 @@ const updateJob = async (req, res) => {
 
   // atomic operation
   const updatedJob = await Job.findByIdAndUpdate({ _id: jobId }, req.body, {
-    // return the document after update
     new: true,
+    // if the propers are not there (body) there'll be no complain
     runValidators: true
   })
   res.status(StatusCodes.OK).json({ updatedJob })
