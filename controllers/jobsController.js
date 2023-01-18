@@ -32,7 +32,7 @@ const getAllJobs = async (req, res) => {
 
 const updateJob = async (req, res) => {
   const { id: jobId } = req.params
-  const { company, position } = req.body
+  const { company, position, jobLocation } = req.body
 
   if (!company || !position) {
     throw new BadRequestError('Please provide all values')
@@ -44,14 +44,24 @@ const updateJob = async (req, res) => {
     throw new NotFoundError(`No job with id: ${jobId}`)
   }
 
-  // check permissions
-
   // atomic operation
+  // if we might have a hook this method do not trigger the hook
+  // it suits better in our case
+  // we do not need to declare the values to update the values
   const updatedJob = await Job.findByIdAndUpdate({ _id: jobId }, req.body, {
     new: true,
     // if the propers are not there (body) there'll be no complain
     runValidators: true
   })
+
+  // another approach
+  // job.position = position
+  // job.company = company
+  // job.jobLocation = jobLocation
+  // await job.save()
+
+  // check permissions
+
   res.status(StatusCodes.OK).json({ updatedJob })
 }
 
@@ -60,3 +70,5 @@ const showStatus = async (req, res) => {
 }
 
 export { createJob, deleteJob, getAllJobs, updateJob, showStatus }
+
+// using findeOneAndUpdate
