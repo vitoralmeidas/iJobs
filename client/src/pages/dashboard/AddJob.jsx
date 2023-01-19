@@ -5,7 +5,6 @@ const AddJob = () => {
   const {
     isEditing,
     showAlert,
-    displayAlert,
     jobLocation,
     position,
     company,
@@ -32,7 +31,6 @@ const AddJob = () => {
       return
     }
     createJob()
-    console.log('job created')
   }
 
   const handleJobInput = e => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { useContext, useReducer } from 'react'
 import axios from 'axios'
 import reducer from './reducer'
 
@@ -23,7 +23,8 @@ import {
   SET_EDIT_JOB,
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
-  EDIT_JOB_ERROR
+  EDIT_JOB_ERROR,
+  DELETE_JOB_BEGIN
 } from './actions'
 
 // checking if there's a user
@@ -275,8 +276,14 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
-  const deleteJob = id => {
-    console.log(`delete: ${id}`)
+  const deleteJob = async jobId => {
+    dispatch({ type: DELETE_JOB_BEGIN })
+    try {
+      await authFetch.delete(`/jobs/${jobId}`)
+      getJobs()
+    } catch (error) {
+      logoutUser()
+    }
   }
 
   return (
