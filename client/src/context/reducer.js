@@ -245,7 +245,8 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      stats: action.payload.stats
+      stats: action.payload.stats,
+      monthlyApplications: action.payload.monthlyApplications
     }
   }
 

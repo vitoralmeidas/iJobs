@@ -9,6 +9,7 @@ import SearchContainer from './SearchContainer'
 import JobsContainer from './JobsContainer'
 import Job from './Job'
 import JobInfo from './JobInfo'
+import Stats from './Stats'
 
 export {
   Logo,
@@ -21,5 +22,6 @@ export {
   JobsContainer,
   SearchContainer,
   Job,
-  JobInfo
+  JobInfo,
+  Stats
 }
