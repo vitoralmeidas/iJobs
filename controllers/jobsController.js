@@ -6,6 +6,7 @@ import {
 } from '../errors/index.js'
 import { StatusCodes } from 'http-status-codes'
 import checkPermissions from '../utils/checkPersmissions.js'
+import mongoose from 'mongoose'
 
 const createJob = async (req, res) => {
   const { company, position } = req.body
@@ -83,9 +84,26 @@ const updateJob = async (req, res) => {
 }
 
 const showStatus = async (req, res) => {
-  res.status(200).send('Show Status')
+  let stats = await Job.aggregate([
+    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    { $group: { _id: '$status', count: { $sum: 1 } } }
+  ])
+
+  // $match
+  // we need to transform the userId into an ObjetcId before comparing them
+
+  // count: {$sum: 1}
+  // Expression 1 to a document will return 1,
+  // since the expression will apply to each document in the group,
+  //  so {$sum: 1} will return the amount of documents in the group.
+
+  stats = stats.reduce((acc, curr) => {
+    const { _id: title, count } = curr
+    acc[title] = count
+    return acc
+  }, {})
+
+  res.status(StatusCodes.OK).json({ stats })
 }
 
 export { createJob, deleteJob, getAllJobs, updateJob, showStatus }
-
-// using findeOneAndUpdate
