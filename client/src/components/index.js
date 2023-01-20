@@ -12,6 +12,7 @@ import JobInfo from './JobInfo'
 import StatsContainer from './StatsContainer'
 import ChartsContainer from './ChartsContainer'
 import Loading from './Loading'
+import StatItem from './StatItem'
 
 export {
   Logo,
@@ -27,5 +28,6 @@ export {
   JobInfo,
   StatsContainer,
   ChartsContainer,
-  Loading
+  Loading,
+  StatItem
 }

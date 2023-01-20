@@ -109,6 +109,7 @@ const showStatus = async (req, res) => {
     declined: stats.declined || 0
   }
 
+  // working with Charts
   let monthlyApplications = []
   res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications })
 }
