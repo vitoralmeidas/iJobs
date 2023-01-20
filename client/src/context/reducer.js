@@ -18,6 +18,8 @@ import {
   SETUP_USER_ERROR,
   SETUP_USER_SUCCESS,
   SET_EDIT_JOB,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS,
   TOGGLE_SIDEBAR,
   UPDATE_USER_BEGIN,
   UPDATE_USER_ERROR,
@@ -228,6 +230,22 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: true
+    }
+  }
+
+  if (action.type === SHOW_STATS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false
+    }
+  }
+
+  if (action.type === SHOW_STATS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      stats: action.payload.stats
     }
   }
 

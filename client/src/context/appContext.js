@@ -24,7 +24,9 @@ import {
   EDIT_JOB_BEGIN,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
-  DELETE_JOB_BEGIN
+  DELETE_JOB_BEGIN,
+  SHOW_STATS_BEGIN,
+  SHOW_STATS_SUCCESS
 } from './actions'
 
 // checking if there's a user
@@ -55,7 +57,8 @@ const initialState = {
   totalJobs: 0,
   numOfPages: 1,
   pages: 1,
-  editJobId: ''
+  editJobId: '',
+  stats: {}
 }
 
 const AppContext = React.createContext()
@@ -283,6 +286,22 @@ const AppProvider = ({ children }) => {
       getJobs()
     } catch (error) {
       logoutUser()
+    }
+  }
+
+  const showStats = async () => {
+    dispatch({ type: SHOW_STATS_BEGIN })
+    try {
+      const { data } = await authFetch.get('/jobs/stats')
+      dispatch({
+        type: SHOW_STATS_SUCCESS,
+        payload: {
+          stats: data.defaultStats
+        }
+      })
+    } catch (error) {
+      console.log(error.response)
+      // logoutUser()
     }
   }
 
