@@ -47,11 +47,10 @@ const getAllJobs = async (req, res) => {
   const queryObject = {
     createdBy: req.user.userId
   }
-
-  if (status !== 'all') {
+  if (status && status !== 'all') {
     queryObject.status = status
   }
-  if (jobType !== 'all') {
+  if (jobType && jobType !== 'all') {
     queryObject.jobType = jobType
   }
   if (search) {
