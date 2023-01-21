@@ -1,6 +1,7 @@
 import { initialState } from './appContext'
 import {
   CLEAR_ALERT,
+  CLEAR_FILTERS,
   CLEAR_VALUES,
   CREATE_JOB_BEGIN,
   CREATE_JOB_ERROR,
@@ -247,6 +248,16 @@ const reducer = (state, action) => {
       isLoading: false,
       stats: action.payload.stats,
       monthlyApplications: action.payload.monthlyApplications
+    }
+  }
+
+  if (action.type === CLEAR_FILTERS) {
+    return {
+      ...state,
+      search: '',
+      searchType: 'all',
+      sort: 'latest',
+      searchStatus: 'all'
     }
   }
 

@@ -26,7 +26,8 @@ import {
   EDIT_JOB_ERROR,
   DELETE_JOB_BEGIN,
   SHOW_STATS_BEGIN,
-  SHOW_STATS_SUCCESS
+  SHOW_STATS_SUCCESS,
+  CLEAR_FILTERS
 } from './actions'
 
 // checking if there's a user
@@ -314,7 +315,7 @@ const AppProvider = ({ children }) => {
   }
 
   const clearFilters = () => {
-    console.log('clear filters')
+    dispatch({ type: CLEAR_FILTERS })
   }
 
   return (
