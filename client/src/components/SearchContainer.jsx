@@ -14,7 +14,8 @@ const SearchContainer = () => {
     statusOptions,
     jobTypeOptions,
     handleChange,
-    clearFilters
+    clearFilters,
+    searchCompany
   } = useAppContext()
 
   const handleSearch = e => {
@@ -34,10 +35,20 @@ const SearchContainer = () => {
         <div className='form-center'>
           {/* search position */}
           <FormRow
+            labelText='Position'
             type='text'
             name='search'
             value={search}
             handleChange={handleSearch}
+          />
+
+          {/* search position */}
+          <FormRow
+            type='text'
+            name='searchCompany'
+            value={searchCompany}
+            handleChange={handleSearch}
+            labelText='Company'
           />
 
           {/* status */}

@@ -62,6 +62,7 @@ const initialState = {
   stats: {},
   monthlyApplications: [],
   search: '',
+  searchCompany: '',
   searchStatus: 'all',
   searchType: 'all',
   sort: 'latest',
@@ -229,11 +230,14 @@ const AppProvider = ({ children }) => {
   }
 
   const getJobs = async () => {
-    const { search, searchStatus, searchType, sort } = state
+    const { search, searchStatus, searchType, sort, searchCompany } = state
 
     let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`
     if (search) {
       url = url + `&search=${search}`
+    }
+    if (searchCompany) {
+      url = url + `&searchCompany=${searchCompany}`
     }
 
     dispatch({ type: GET_JOBS_BEGIN })

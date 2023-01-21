@@ -257,7 +257,8 @@ const reducer = (state, action) => {
       search: '',
       searchType: 'all',
       sort: 'latest',
-      searchStatus: 'all'
+      searchStatus: 'all',
+      searchCompany: ''
     }
   }
 

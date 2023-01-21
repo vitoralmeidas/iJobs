@@ -42,7 +42,7 @@ const deleteJob = async (req, res) => {
 }
 
 const getAllJobs = async (req, res) => {
-  const { search, status, jobType, sort } = req.query
+  const { search, status, jobType, sort, searchCompany } = req.query
 
   const queryObject = {
     createdBy: req.user.userId
@@ -55,6 +55,9 @@ const getAllJobs = async (req, res) => {
   }
   if (search) {
     queryObject.position = { $regex: search, $options: 'i' }
+  }
+  if (searchCompany) {
+    queryObject.company = { $regex: searchCompany, $options: 'i' }
   }
 
   // NO AWAIT
