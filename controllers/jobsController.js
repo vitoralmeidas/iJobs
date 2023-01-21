@@ -7,6 +7,7 @@ import {
 import { StatusCodes } from 'http-status-codes'
 import checkPermissions from '../utils/checkPersmissions.js'
 import mongoose from 'mongoose'
+import moment from 'moment'
 
 const createJob = async (req, res) => {
   const { company, position } = req.body
@@ -128,6 +129,21 @@ const showStatus = async (req, res) => {
     { $sort: { '_id.year': -1, '_id.month': -1 } },
     { $limit: 6 }
   ])
+
+  monthlyApplications = monthlyApplications
+    .map(item => {
+      const {
+        _id: { year, month },
+        count
+      } = item
+      // accepts 0-11
+      const date = moment()
+        .month(month - 1)
+        .year(year)
+        .format('MMM Y')
+      return { date, count }
+    })
+    .reverse()
   res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications })
 }
 

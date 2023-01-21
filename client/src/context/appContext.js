@@ -58,7 +58,8 @@ const initialState = {
   numOfPages: 1,
   pages: 1,
   editJobId: '',
-  stats: {}
+  stats: {},
+  monthlyApplications: []
 }
 
 const AppContext = React.createContext()
