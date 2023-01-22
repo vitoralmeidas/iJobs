@@ -260,9 +260,8 @@ const AppProvider = ({ children }) => {
       // any error will be a server problem, 4xx or 5xx
       // just logout the user
       // testing
-      // logoutUser()
+      logoutUser()
     }
-    // clear all posible alerts
     clearAlert()
   }
 
@@ -321,8 +320,7 @@ const AppProvider = ({ children }) => {
         }
       })
     } catch (error) {
-      console.log(error.response)
-      // logoutUser()
+      logoutUser()
     }
     clearAlert()
   }
