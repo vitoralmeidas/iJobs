@@ -57,7 +57,7 @@ const initialState = {
   jobs: [],
   totalJobs: 0,
   numOfPages: 1,
-  pages: 1,
+  page: 1,
   editJobId: '',
   stats: {},
   monthlyApplications: [],

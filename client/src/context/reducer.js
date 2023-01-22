@@ -179,7 +179,7 @@ const reducer = (state, action) => {
       isLoading: false,
       jobs: action.payload.jobs,
       totalJobs: action.payload.totalJobs,
-      totalOfPages: action.payload.totalOfPages
+      numOfPages: action.payload.numOfPages
     }
   }
 
