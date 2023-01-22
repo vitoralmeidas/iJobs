@@ -22,6 +22,11 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
+// security
+import helmet from 'helmet'
+import xss from 'xss-clean'
+import mongoSanitize from 'express-mongo-sanitize'
+
 if (process.env.NODE_NEV !== 'production') {
   app.use(morgan('dev'))
 }
@@ -32,6 +37,9 @@ app.use(express.static(path.resolve(__dirname, './client/build')))
 
 // body json
 app.use(express.json())
+app.use(helmet)
+app.use(xss)
+app.use(mongoSanitize)
 
 // routes
 app.use('/api/v1/auth', authRouter)
