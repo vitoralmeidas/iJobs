@@ -1,5 +1,6 @@
 import { initialState } from './appContext'
 import {
+  CHANGE_PAGE,
   CLEAR_ALERT,
   CLEAR_FILTERS,
   CLEAR_VALUES,
@@ -125,6 +126,7 @@ const reducer = (state, action) => {
   if (action.type === HANDLE_CHANGE) {
     return {
       ...state,
+      page: 1,
       [action.payload.name]: action.payload.value
     }
   }
@@ -259,6 +261,13 @@ const reducer = (state, action) => {
       sort: 'latest',
       searchStatus: 'all',
       searchCompany: ''
+    }
+  }
+
+  if (action.type === CHANGE_PAGE) {
+    return {
+      ...state,
+      page: action.payload.page
     }
   }
 
