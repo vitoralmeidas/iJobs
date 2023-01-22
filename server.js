@@ -37,9 +37,9 @@ app.use(express.static(path.resolve(__dirname, './client/build')))
 
 // body json
 app.use(express.json())
-app.use(helmet)
-app.use(xss)
-app.use(mongoSanitize)
+app.use(helmet())
+app.use(xss())
+app.use(mongoSanitize())
 
 // routes
 app.use('/api/v1/auth', authRouter)
