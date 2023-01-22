@@ -2,10 +2,9 @@ import 'express-async-errors'
 import express from 'express'
 const app = express()
 import 'colors'
+import morgan from 'morgan'
 import dotenv from 'dotenv'
 dotenv.config()
-
-import morgan from 'morgan'
 
 // db and authenticateUser
 import connectDB from './db/connect.js'
@@ -19,37 +18,36 @@ import errorHandlerMiddleware from './middleware/error-handler.js'
 import notFoundMiddleware from './middleware/not-found.js'
 import authenticateUser from './middleware/auth.js'
 
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+import path from 'path'
+
 if (process.env.NODE_NEV !== 'production') {
   app.use(morgan('dev'))
 }
 
+const __dirname = dirname(fileURLToPath(import.meta.url))
+// deploy
+app.use(express.static(path.resolve(__dirname, './client/build')))
+
+// body json
 app.use(express.json())
 
-app.get('/', (req, res) => {
-  // the error handler middleware will get this error
-  // throw new Error('error')
-  res.json({ msg: 'HI THERE' })
-})
-
-app.get('/api/v1', (req, res) => {
-  // the error handler middleware will get this error
-  // throw new Error('error')
-  res.json({ msg: 'API' })
-})
-
-// auth route
+// routes
 app.use('/api/v1/auth', authRouter)
-
-// jobs route
 app.use('/api/v1/jobs', authenticateUser, jobRouter)
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './client/build', 'index.html'))
+})
+
+const port = process.env.PORT || 5000
 
 // looking for requests errors
 app.use(notFoundMiddleware)
 
 // looking for general errors
 app.use(errorHandlerMiddleware)
-
-const port = process.env.PORT || 5000
 
 const start = async () => {
   try {
