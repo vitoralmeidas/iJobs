@@ -7,10 +7,10 @@ import {
   showStatus,
   updateJob
 } from '../controllers/jobsController.js'
-import authenticate from '../middleware/auth.js'
+import testUser from '../middleware/testUser.js'
 
-router.route('/').get(getAllJobs).post(createJob)
+router.route('/').get(getAllJobs).post(testUser, createJob)
 router.route('/stats').get(showStatus)
-router.route('/:id').delete(deleteJob).patch(updateJob)
+router.route('/:id').delete(testUser, deleteJob).patch(testUser, updateJob)
 
 export default router
