@@ -1,4 +1,4 @@
-export default attachCookie = ({ res, token }) => {
+const attachCookie = ({ res, token }) => {
   const oneDay = 1000 * 60 * 60 * 24
 
   res.cookie('token', token, {
@@ -7,3 +7,5 @@ export default attachCookie = ({ res, token }) => {
     secure: process.env.NODE_ENV === 'production'
   })
 }
+
+export default attachCookie
