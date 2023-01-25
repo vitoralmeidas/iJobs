@@ -28,8 +28,7 @@ const register = async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       location: user.location
-    },
-    token
+    }
   })
 }
 
@@ -56,7 +55,7 @@ const login = async (req, res) => {
 
   attachCookie({ res, token })
 
-  res.status(StatusCodes.CREATED).json({ user, token, location: user.location })
+  res.status(StatusCodes.CREATED).json({ user, location: user.location })
 }
 
 const updateUser = async (req, res) => {
@@ -81,7 +80,6 @@ const updateUser = async (req, res) => {
   const token = user.createJWT()
   res.status(StatusCodes.OK).json({
     user,
-    token,
     location: user.location
   })
 }
