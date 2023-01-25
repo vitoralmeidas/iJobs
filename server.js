@@ -27,6 +27,10 @@ import helmet from 'helmet'
 import xss from 'xss-clean'
 import mongoSanitize from 'express-mongo-sanitize'
 
+import cookieParser from 'cookie-parser'
+
+/////////////////////////////////////////////////////////////////////
+
 if (process.env.NODE_NEV !== 'production') {
   app.use(morgan('dev'))
 }
@@ -37,6 +41,7 @@ app.use(express.static(path.resolve(__dirname, './client/build')))
 
 // body json
 app.use(express.json())
+app.use(cookieParser())
 app.use(helmet())
 app.use(xss())
 app.use(mongoSanitize())

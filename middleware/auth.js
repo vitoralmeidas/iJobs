@@ -3,6 +3,7 @@ import { Unauthenticated } from '../errors/index.js'
 
 const auth = async (req, res, next) => {
   // check header
+  console.log(req.cookies)
   const authHeader = req.headers.authorization
   if (!authHeader || !authHeader.startsWith('Bearer')) {
     throw new Unauthenticated('Authentication invalid')
