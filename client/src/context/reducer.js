@@ -56,7 +56,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       user: action.payload.user,
-      token: action.payload.token,
       userLocation: action.payload.location,
       jobLocation: action.payload.location,
       isLoading: false,
@@ -87,7 +86,6 @@ const reducer = (state, action) => {
     return {
       ...initialState,
       user: null,
-      token: null,
       userLocation: '',
       jobLocation: ''
     }
@@ -108,7 +106,6 @@ const reducer = (state, action) => {
       alertType: 'success',
       alertText: 'User Profile Updated!',
       user: action.payload.user,
-      toke: action.payload.token,
       userLocation: action.payload.location,
       jobLocation: action.payload.location
     }
