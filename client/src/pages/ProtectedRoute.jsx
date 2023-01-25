@@ -1,11 +1,14 @@
 import { Navigate } from 'react-router-dom'
 import { useAppContext } from '../context/appContext'
+import { Loading } from '../components/index.js'
 
-const ProtectedRoute = ({children}) => {
-  const { user } = useAppContext()
-  
-  if(!user) {
-    return <Navigate to = '/landing' />
+const ProtectedRoute = ({ children }) => {
+  const { user, userLoading } = useAppContext()
+
+  if (userLoading) return <Loading />
+
+  if (!user) {
+    return <Navigate to='/landing' />
   }
 
   return children

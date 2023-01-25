@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer } from 'react'
 import axios from 'axios'
 import reducer from './reducer'
 
@@ -29,19 +29,15 @@ import {
   SHOW_STATS_SUCCESS,
   CLEAR_FILTERS,
   CHANGE_PAGE,
-  DELETE_JOB_ERROR
+  DELETE_JOB_ERROR,
+  GET_CURRENT_USER_BEGIN,
+  GET_CURRENT_USER_SUCCESS
 } from './actions'
 
-// checking if there's a user
-// initial loading
-const user = localStorage.getItem('user') // we save as JSON ...
-const token = localStorage.getItem('token')
-const userLocation = localStorage.getItem('location')
-
 const initialState = {
-  user: user ? JSON.parse(user) : null,
-  token: token || '',
-  userLocation: userLocation || '',
+  userLoading: true,
+  user: null,
+  userLocation: '',
   isLoading: false,
   showAlert: true,
   alertType: '',
@@ -55,7 +51,7 @@ const initialState = {
   jobType: 'full-time',
   statusOptions: ['pending', 'interview', 'declined'],
   status: 'pending',
-  jobLocation: userLocation || '',
+  jobLocation: '',
   jobs: [],
   totalJobs: 0,
   numOfPages: 1,
@@ -82,17 +78,6 @@ const AppProvider = ({ children }) => {
   })
 
   // interceptors
-  authFetch.interceptors.request.use(
-    config => {
-      // Do something before request is sent
-      // the job's actions will use token and updateUser too
-      config.headers['Authorization'] = `Bearer ${state.token}`
-      return config
-    },
-    error => {
-      return Promise.reject(error)
-    }
-  )
 
   authFetch.interceptors.response.use(
     response => {
@@ -123,34 +108,20 @@ const AppProvider = ({ children }) => {
     clearAlert()
   }
 
-  const addUserToLocalStorage = ({ user, token, location }) => {
-    localStorage.setItem('user', JSON.stringify(user))
-    localStorage.setItem('token', token)
-    localStorage.setItem('location', location)
-  }
-
-  const removeUserFromLocalStorage = () => {
-    localStorage.removeItem('user')
-    localStorage.removeItem('token')
-    localStorage.removeItem('location')
-  }
-
   const setUpUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN })
 
     try {
       const response = await axios.post(`/api/v1/auth/${endPoint}`, currentUser)
-      const { user, token, location } = await response.data
+      const { user, location } = await response.data
       dispatch({
         type: SETUP_USER_SUCCESS,
         payload: {
           user,
-          token,
           location,
           alertText
         }
       })
-      addUserToLocalStorage({ user, token, location })
     } catch (error) {
       dispatch({
         type: SETUP_USER_ERROR,
@@ -166,9 +137,9 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
+    await authFetch('/auth/logout')
     dispatch({ type: LOGOUT_USER })
-    removeUserFromLocalStorage()
   }
 
   const updateUser = async currentUser => {
@@ -176,13 +147,12 @@ const AppProvider = ({ children }) => {
 
     try {
       const { data } = await authFetch.patch('/auth/updateUser', currentUser)
-      const { user, location, token } = data
+      const { user, location } = data
 
       dispatch({
         type: UPDATE_USER_SUCCESS,
-        payload: { user, location, token }
+        payload: { user, location }
       })
-      addUserToLocalStorage({ user, location, token })
     } catch (error) {
       if (error.response.status === 401) return
       dispatch({
@@ -341,6 +311,26 @@ const AppProvider = ({ children }) => {
       payload: { page }
     })
   }
+
+  const getCurrentUser = async () => {
+    dispatch({ type: GET_CURRENT_USER_BEGIN })
+    try {
+      const { data } = await authFetch('/auth/getCurrentUser')
+      const { user, location } = data
+      dispatch({
+        type: GET_CURRENT_USER_SUCCESS,
+        payload: { user, location }
+      })
+    } catch (error) {
+      if (error.response.status === 401) return
+      logoutUser()
+    }
+  }
+
+  useEffect(() => {
+    getCurrentUser()
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <AppContext.Provider
