@@ -6,7 +6,8 @@ import {
   login,
   register,
   updateUser,
-  getCurrentUser
+  getCurrentUser,
+  logout
 } from '../controllers/authController.js'
 import rateLimiter from 'express-rate-limit'
 
@@ -18,6 +19,7 @@ const apiLimiter = rateLimiter({
 
 router.route('/register').post(apiLimiter, register)
 router.route('/login').post(apiLimiter, login)
+router.route('/logout').get(logout)
 router.route('/updateUser').patch(authenticateUser, testUser, updateUser)
 router
   .route('/getCurrentUser')

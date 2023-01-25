@@ -137,7 +137,8 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
+    await authFetch('/auth/logout')
     dispatch({ type: LOGOUT_USER })
   }
 
@@ -328,6 +329,7 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     getCurrentUser()
+    // eslint-disable-next-line
   }, [])
 
   return (
